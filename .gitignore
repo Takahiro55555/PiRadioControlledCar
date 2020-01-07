@@ -1,0 +1,6 @@
+.vscode
+
+.venv
+__init__*
+
+.DS_Store
