@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pitank"
+name = "picar"
 version = "0.1.0"
 description = "ラジコン"
 authors = ["Takahiro55555 <tkhr.pub@gmail.com>"]
