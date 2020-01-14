@@ -1,8 +1,12 @@
 .vscode
 
+# Python (Poetry)
 .venv
+/install
 __pycache__
 
+# Mac OS
 .DS_Store
 
+# WebRTC Native Client Momo
 webrtc_logs_*
