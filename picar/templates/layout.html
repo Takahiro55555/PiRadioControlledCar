@@ -1,0 +1,19 @@
+<!-- Reference: https://siguniang.wordpress.com/2015/09/23/websocket-server-using-tornado/ -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <title>{% block title %}デフォルトタイトル{% end %}</title>
+    <link href="{{ static_url('css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ static_url('css/style.css') }}" rel="stylesheet" />
+    <link
+      rel="shortcut icon"
+      href="{{ static_url('favicons/favicon.ico') }}"
+      type="image/x-icon"
+    />
+  </head>
+  <body>
+    {% block content %} {% end %}
+  </body>
+</html>

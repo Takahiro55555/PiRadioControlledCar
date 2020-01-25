@@ -1,0 +1,31 @@
+{% extends "layout.html" %} {% block content %}
+<h3>Momo P2P</h3>
+<div>
+  <select id="codec">
+    <option value="H264">H264</option>
+    <option value="VP8">VP8</option>
+    <option value="VP9">VP9</option>
+  </select>
+  <input type="button" onclick="connect();" value="Connect" />
+  <input type="button" onclick="disconnect();" value="Disconnect" />
+  <input type="button" onclick="play();" value="Play" />
+</div>
+<div style="width: 100%; height: 80%;">
+  <video id="remote_video" autoplay style="border: 3px solid gray;width: 100%; height: 100%;"></video>
+</div>
+<div id="key-input"></div>
+<input type="hidden" id="momo-port" value="{{momoPort}}" />
+<script type="text/javascript" src="{{ static_url('javascript/keybord.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('javascript/webrtc.js') }}"></script>
+<style>
+  html {
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+{% end %}
