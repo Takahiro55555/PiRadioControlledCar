@@ -19,7 +19,8 @@ const peerConnectionConfig = {
 
 const isSSL = location.protocol === 'https:';
 const wsProtocol = isSSL ? 'wss://' : 'ws://';
-const wsUrl = wsProtocol + location.host + '/ws';
+const momoPort = document.getElementById("momo-port").value;
+const wsUrl = wsProtocol + location.hostname + ':' + momoPort + '/ws';
 const ws = new WebSocket(wsUrl);
 ws.onopen = onWsOpen.bind();
 ws.onerror = onWsError.bind();
