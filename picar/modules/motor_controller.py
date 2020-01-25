@@ -84,8 +84,8 @@ class MotorController(object):
 
     def __calc_radius(self, value_x=0, value_y=0):
         radius = math.sqrt(value_x*value_x + value_y*value_y)
-        if radius >= 1:
-            return 1
+        if radius >= 1: return 1
+        if radius == 0: return 1
         return radius
 
     def apply_brake(self):
