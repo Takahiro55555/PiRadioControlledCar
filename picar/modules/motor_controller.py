@@ -14,8 +14,7 @@
     """"""""""""""""""""""""""""""""""""
     * の状態を前進とする
 '''
-import pigpio, time
-import numpy as np
+import pigpio, time, math
 class MotorController(object):
     """docstring for MotorController."""
     def __init__(self):
@@ -33,7 +32,7 @@ class MotorController(object):
             self.__pi.set_mode(output_pin, pigpio.OUTPUT)
 
         # 超信地旋回するスティックの角度（sin）
-        self.__spin_turn_stick_val_cos = np.cos(np.pi/12) # 弧度法15度
+        self.__spin_turn_stick_val_cos = math.cos(math.pi/12) # 弧度法15度
 
         # モーターの回転方向が変化する操作受付時の時間を入力
         # 一時停止処理終了時に0にする
@@ -84,7 +83,7 @@ class MotorController(object):
 
 
     def __calc_radius(self, value_x=0, value_y=0):
-        radius = np.sqrt(value_x*value_x + value_y*value_y)
+        radius = math.sqrt(value_x*value_x + value_y*value_y)
         if radius >= 1:
             return 1
         return radius
@@ -105,7 +104,7 @@ class MotorController(object):
         if stick_val_sin >= self.__spin_turn_stick_val_cos: # 超信地旋回
             self.__operate_motor(value_x, -1*value_x)
             return
-        front_or_back = np.sign(value_y) # y 軸の方向によって前後の回転量が決まる
+        front_or_back = math.sin(value_y) # y 軸の方向によって前後の回転量が決まる
         # print(front_or_back)
         if value_x >= 0:
             self.__operate_motor(front_or_back*(radius - value_x), front_or_back*radius)
