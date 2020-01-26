@@ -1,5 +1,8 @@
 #! /bin/bash -e
 
+# リモートリポジトリの最新版を取得
+git pull origin master
+
 # ini setting
 INI_FILE=setting.ini
 INI_SECTION=develop
