@@ -1,5 +1,5 @@
 const downedKeys = { "w": 0, "s": 0, "a": 0, "d": 0, "W": 0, "S": 0, "A": 0, "D": 0 };
-const picarWsURL = 'ws://' + location.host + '/websocket';
+const picarWsURL = 'ws://' + location.host + '/ws/controller';
 const picarWs = new WebSocket(picarWsURL);
 const sendData = { "operation": { "motor": { "x": 0, "y": 0 }, "brake": 0 } };
 let beforeSendData = JSON.stringify(sendData);
