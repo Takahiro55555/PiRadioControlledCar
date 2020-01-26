@@ -2,6 +2,7 @@
 <div class="container">
   <div class="row video-parent">
     <video id="remote_video" class="col-12 momo-video" autoplay></video>
+    <canvas id="indicator" class="indicator"></canvas>
   </div>
 
   <div class="row" id="controlle-panel">
@@ -22,6 +23,8 @@
 </div>
 
 <script>
+
+  /* 表示する動画のサイズを自動調整する */
   const videoElement = document.getElementById('remote_video');
   const controllePanelElement = document.getElementById('controlle-panel');
   videoElement.addEventListener('resize', function () {
@@ -32,9 +35,12 @@
     videoElement.style.height = String(calcedHeight) + 'px';
     videoElement.style.width = String(document.body.clientWidth) + 'px';
   }, false);
+
+
 </script>
 
 <input type="hidden" id="momo-port" value="{{momoPort}}" />
+<script type="text/javascript" src="{{ static_url('javascript/indicator.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('javascript/keybord.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('javascript/webrtc.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('javascript/monitor.js') }}"></script>
