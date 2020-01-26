@@ -12,26 +12,24 @@ from settings import *
 
 # 以下自作クラス
 from modules.motor_controller import MotorController
+from modules.monitor import Monitor
 
 # HACK: グローバル変数を消す
-cl = []
 motor_controller = MotorController()
+monitor = Monitor()
 
-class WebSocketHandler(tornado.websocket.WebSocketHandler):
+class WebSocketControllerHandler(tornado.websocket.WebSocketHandler):
 
     def open(self):
-        if self not in cl:
-            cl.append(self)
+        print("Websocket controller opened")
 
     def on_message(self, message):
-        for client in cl:
-            client.write_message(message)
-            print(message)
-            self.__control(message)
+        self.write_message(message)
+        print(message)
+        self.__control(message)
 
     def on_close(self):
-        if self in cl:
-            cl.remove(self)
+        print("Websocket controller closed")
     
     def __control(seld, message):
         message_dict = json.loads(message)
@@ -45,6 +43,23 @@ class WebSocketHandler(tornado.websocket.WebSocketHandler):
         x, y = message_dict["operation"]["motor"]["x"], message_dict["operation"]["motor"]["y"]
         motor_controller.apply_operation(value_x=x, value_y=y)
         print("Applyed x: %f, y: %f" % (x, y))
+
+class WebSocketMonitorHundler(tornado.websocket.WebSocketHandler):
+    def open(self):
+        print("Websocket monitor opened")
+
+    def on_message(self, message):
+        response_data = {}
+        monitor.update_wlan0_status()
+        response_data["signal-level"], response_data["signal-value"] = monitor.get_wlan0_level()
+        reply = json.dumps(response_data)
+        self.write_message(reply)
+        print("message: %s" % message)
+        print("reply: %s" % reply)
+
+    def on_close(self):
+        print("Websocket monitor closed")
+
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -67,7 +82,8 @@ def make_app(debug=False):
         (r"/", MainHandler),
         (r"/mobile", MobilePageHundler),
         (r"/pc", PcPageHundler),
-        (r"/websocket", WebSocketHandler)
+        (r"/ws/controller", WebSocketControllerHandler),
+        (r"/ws/monitor", WebSocketMonitorHundler),
     ],
         template_path=os.path.join('', 'templates'),
         static_path=os.path.join('', 'static'),
