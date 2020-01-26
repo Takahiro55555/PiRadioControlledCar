@@ -5,7 +5,7 @@
 
 
 const remoteVideo = document.getElementById('remote_video');
-remoteVideo.controls = true;
+remoteVideo.controls = false;
 let peerConnection = null;
 let candidates = [];
 let hasReceivedSdp = false;
