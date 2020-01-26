@@ -63,7 +63,7 @@ class WebSocketMonitorHundler(tornado.websocket.WebSocketHandler):
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         print("MainHubdler")
-        self.render('server.html', hostName=HOST_NAME, title="WebSocket")
+        self.render('server.html', hostName=HOST_NAME, title="TestPage")
 
 class MobilePageHundler(tornado.web.RequestHandler):
     def get(self):
