@@ -1,7 +1,3 @@
-/* Canvas */
-const indicatorCanvas = document.getElementById('indicator');
-const indicator = new Indicator(indicatorCanvas);
-
 /* Web socket */
 const monitorWsUrl = 'ws://' + location.host + '/ws/monitor';
 const monitorWs = new WebSocket(monitorWsUrl);
@@ -15,24 +11,11 @@ setInterval(function () {
 
 monitorWs.onmessage = function (ev) {
     const ping = performance.now() - beforeTime;
-    document.getElementById("ping").innerHTML = 'ping: ' + String(Math.floor(ping));
-    document.getElementById("signal-level").innerHTML = 'signal level: ' + String(JSON.parse(ev.data)['signal-level']);
+    //document.getElementById("ping").innerHTML = 'ping: ' + String(Math.floor(ping));
+    //document.getElementById("signal-level").innerHTML = 'signal level: ' + String(JSON.parse(ev.data)['signal-level']);
     console.log(ev.data);
-    indicator.setPing(Math.floor(ping));
-    indicator.setWifiSignalLevel(JSON.parse(ev.data)['signal-level']);
-    indicator.applyIndicator();
+
+    document.getElementById('wi-fi').innerHTML = 'Signal Level: ' + String(JSON.parse(ev.data)['signal-level']);
+    document.getElementById('ping').innerHTML = 'Ping: ' + String(Math.floor(ping));
 };
-
-/* videoエレメントのサイズサイズ変更時に呼び出されるイベントハンドラ */
-document.getElementById('remote_video').addEventListener('resize', function () {
-    indicator.initCanvas();
-}, false);
-
-window.onload = function () {
-    indicator.initCanvas();
-}
-
-
-
-
 

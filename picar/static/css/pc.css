@@ -1,27 +1,34 @@
 html {
     width: 100%;
     height: 100%;
+    margin-top: 0rem;
+    margin-left: 0rem;
+    margin-bottom: 0rem;
+    margin-right: 0rem;
 }
 
 body {
     width: 100%;
     height: 100%;
+    margin-top: 0rem;
+    margin-left: 0rem;
+    margin-bottom: 0rem;
+    margin-right: 0rem;
 }
 
 .momo-video{
-    border: 3px solid gray;
+    border: 4px solid #000000;
+    background: #000000be;
 }
 
-/* 動画に重ねるインジケータ用canvas */
-.indicator{
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
+.btn-padding{
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
 }
 
-.video-parent{
-    position: relative;
-    background-color: white;
+.padding-1{
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+    padding-right: 1rem;
 }

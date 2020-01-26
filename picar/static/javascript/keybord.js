@@ -16,8 +16,7 @@ document.addEventListener('keydown', (event) => {
     sendData["operation"]["motor"] = calcAxis(downedKeys);
     if (JSON.stringify(sendData) != beforeSendData) {
         beforeSendData = JSON.stringify(sendData)
-        logElement.innerText = beforeSendData;
-        picarWs.send(JSON.stringify(sendData));
+        send(picarWs, sendData);
     }
 });
 
@@ -32,10 +31,20 @@ document.addEventListener('keyup', (event) => {
     sendData["operation"]["motor"] = calcAxis(downedKeys);
     if (JSON.stringify(sendData) != beforeSendData) {
         beforeSendData = JSON.stringify(sendData)
-        logElement.innerText = beforeSendData;
-        picarWs.send(JSON.stringify(sendData));
+        send(picarWs, sendData);
     }
 });
+
+function send(ws, data) {
+    console.log(JSON.stringify(data));
+    if (data['operation']) {
+        if (data['operation']['motor']) {
+            document.getElementById('axis-y').innerHTML = 'Power: ' + String(Math.floor(Number(data['operation']['motor']['y']) * 100)) + '%';
+            document.getElementById('axis-x').innerHTML = 'Turn: ' + String(Math.floor(Number(data['operation']['motor']['x']) * 100)) + '%';
+        }
+    }
+    ws.send(JSON.stringify(data));
+}
 
 function calcAxis(downedKeys) {
     let axisX = 0;
