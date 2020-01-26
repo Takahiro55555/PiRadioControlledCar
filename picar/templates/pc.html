@@ -1,31 +1,42 @@
 {% extends "layout.html" %} {% block content %}
-<h3>Momo P2P</h3>
-<div>
-  <select id="codec">
-    <option value="H264">H264</option>
-    <option value="VP8">VP8</option>
-    <option value="VP9">VP9</option>
-  </select>
-  <input type="button" onclick="connect();" value="Connect" />
-  <input type="button" onclick="disconnect();" value="Disconnect" />
-  <input type="button" onclick="play();" value="Play" />
+<div class="container">
+  <div class="row video-parent">
+    <video id="remote_video" class="col-12 momo-video" autoplay></video>
+  </div>
+
+  <div class="row" id="controlle-panel">
+    <select id="codec" class="">
+      <option class="dropdown-item" value="H264">H264</option>
+      <option class="dropdown-item" value="VP8">VP8</option>
+      <option class="dropdown-item" value="VP9">VP9</option>
+      <div>
+    </select>
+    <input type="button" class="btn btn-primary " onclick="connect();" value="Connect" />
+    <input type="button" class="btn btn-danger " onclick="disconnect();" value="Disconnect" />
+  </div>
+
+
+  <div id="key-input"></div>
+  <div id="ping"></div>
+  <div id="signal-level"></div>
 </div>
-<div style="width: 100%; height: 80%;">
-  <video id="remote_video" autoplay style="border: 3px solid gray;width: 100%; height: 100%;"></video>
-</div>
-<div id="key-input"></div>
+
+<script>
+  const videoElement = document.getElementById('remote_video');
+  const controllePanelElement = document.getElementById('controlle-panel');
+  videoElement.addEventListener('resize', function () {
+    const bcr = videoElement.getBoundingClientRect();
+    const w = bcr.width, h = bcr.height;
+    console.log(String(w));
+    const calcedHeight = document.body.clientHeight - controllePanelElement.getBoundingClientRect().height;
+    videoElement.style.height = String(calcedHeight) + 'px';
+    videoElement.style.width = String(document.body.clientWidth) + 'px';
+  }, false);
+</script>
+
 <input type="hidden" id="momo-port" value="{{momoPort}}" />
 <script type="text/javascript" src="{{ static_url('javascript/keybord.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('javascript/webrtc.js') }}"></script>
-<style>
-  html {
-    width: 100%;
-    height: 100%;
-  }
-
-  body {
-    width: 100%;
-    height: 100%;
-  }
-</style>
+<script type="text/javascript" src="{{ static_url('javascript/monitor.js') }}"></script>
+<link rel="stylesheet" href="{{ static_url('css/pc.css') }}">
 {% end %}
