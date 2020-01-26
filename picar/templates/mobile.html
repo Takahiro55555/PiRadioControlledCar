@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>Mobile WebSockets Test</h1>
+
+<p>
+  <div id="txt"></div>
+</p>
+
+<script>
+  let ws;
+  /* 下記URLの'ws://'はウェブソケットを使用するため。セキュアアナ通信を行う場合は、'wss://'を使用する */
+  ws = new WebSocket("ws://{{ hostName }}:8080/websocket");
+  ws.onmessage = function (ev) {
+    document.getElementById("variable").innerHTML = ev.data;
+    console.log(ev.data);
+  }
+
+  window.addEventListener("deviceorientation", handleOrientation, true);
+  const txt = document.getElementById("txt");   // データを表示するdiv要素の取得
+  let absolute = 0, alpha = 0, beta = 0, gamma = 0;
+  function handleOrientation(event) {
+    absolute = event.absolute;
+    alpha = event.alpha;
+    beta = event.beta;
+    gamma = event.gamma;
+  }
+
+  // 指定時間ごとに繰り返し実行される setInterval(実行する内容, 間隔[ms]) タイマーを設定
+  let timer = window.setInterval(() => {
+    displayData();      // displayData 関数を実行
+  }, 1000); // 33msごとに（1秒間に約30回）
+
+  // データを表示する displayData 関数
+  function displayData() {
+    txt.innerHTML = "alpha: " + alpha + "<br>"  // x軸の値
+      + "beta:  " + beta + "<br>"  // y軸の値
+      + "gamma: " + gamma;          // z軸の値
+    let data = { "absolute": absolute, "alpha": alpha, "beta": beta, "gamma": gamma };
+    ws.send(JSON.stringify(data));
+  }
+</script>
+{% end %}
