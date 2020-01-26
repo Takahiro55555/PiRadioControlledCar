@@ -1,5 +1,4 @@
 import os
-import socket
 import sys
 import json
 
@@ -80,7 +79,7 @@ def make_app(debug=False):
     print("Server started")
     return tornado.web.Application([
         (r"/", MainHandler),
-        (r"/mobile", MobilePageHundler),
+        (r"/mobile", MobilePageHundler), # iphoneからジャイロスコープを利用するにはhttpsに対応しないといけないためしばらく放置
         (r"/pc", PcPageHundler),
         (r"/ws/controller", WebSocketControllerHandler),
         (r"/ws/monitor", WebSocketMonitorHundler),
