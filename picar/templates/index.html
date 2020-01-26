@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h1 class="col-12">{{title}}</h1>
+        <div class="col-12">
+            <a id="controllor-pc" href="">コントローラ（PC専用）</a>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('controllor-pc').href = 'http://' + location.host + '/pc';
+</script>
+
+</html>
+{% end %}
