@@ -3,10 +3,27 @@ const picarWsURL = 'ws://' + location.host + '/ws/controller';
 const picarWs = new WebSocket(picarWsURL);
 const sendData = { "operation": { "motor": { "x": 0, "y": 0 }, "brake": 0 } };
 let beforeSendData = JSON.stringify(sendData);
+let isNotCurrentController = true;
+
+picarWs.onmessage = function (ev) {
+    console.log(ev.data);
+    const rcvData = JSON.parse(ev.data);
+    if (isNotCurrentController) {
+        if (rcvData['is-current-controller'] == 1) {
+            isNotCurrentController = false;
+            document.getElementById('is-enabled').innerText = 'Status: Active';
+            alert("コントローラが有効になりました");
+        }
+    }
+};
+
+window.addEventListener('beforeunload', function () {
+    console.log("Close connection");
+    picarWs.close();
+});
 
 document.addEventListener('keydown', (event) => {
     const keyName = event.key;
-    const logElement = document.getElementById("key-input");
     if (keyName in downedKeys) {
         downedKeys[keyName] = 1;
     }
@@ -21,7 +38,6 @@ document.addEventListener('keydown', (event) => {
 });
 
 document.addEventListener('keyup', (event) => {
-    const logElement = document.getElementById("key-input");
     for (const key in downedKeys) {
         downedKeys[key] = 0;
     }
@@ -36,6 +52,7 @@ document.addEventListener('keyup', (event) => {
 });
 
 function send(ws, data) {
+    if (isNotCurrentController) return;
     console.log(JSON.stringify(data));
     if (data['operation']) {
         if (data['operation']['motor']) {

@@ -7,6 +7,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 
+# 設定ファイル（定数を設定）
 from settings import *
 
 # 以下自作クラス
@@ -18,19 +19,44 @@ motor_controller = MotorController()
 monitor = Monitor()
 
 class WebSocketControllerHandler(tornado.websocket.WebSocketHandler):
-
+    client_list = []
     def open(self):
+        self.client_list.append(self)
         print("Websocket controller opened")
+        # 通知を送る
+        if len(self.client_list) == 1: result = {"is-current-controller": 1}
+        else: result = {"is-current-controller": 0}
+        msg = json.dumps(result)
+        self.write_message(msg)
 
     def on_message(self, message):
-        self.write_message(message)
-        print(message)
-        self.__control(message)
+        # キューの先頭のクライアントからの操作のみを受け付ける（排他制御）
+        if self == self.client_list[0]:
+            self.__apply_control(message)
+            result = {"is-current-controller": 1}
+        else:
+            result = {"is-current-controller": 0}
+        msg = json.dumps(result)
+        self.write_message(msg)
+        print(msg)
 
     def on_close(self):
+        try:
+            i = self.client_list.index(self)
+            _ = self.client_list.pop(i)
+        except ValueError:
+            print("Connection not found: %s" % self.token)
+        except:
+            print("This connection never registerd")
+        
+        # コントローラが入れ替わった場合は、通知
+        if len(self.client_list) != 0 and i==0:
+            result = {"is-current-controller": 1}
+            msg = json.dumps(result)
+            self.client_list[0].write_message(msg)
         print("Websocket controller closed")
-    
-    def __control(seld, message):
+
+    def __apply_control(seld, message):
         message_dict = json.loads(message)
         if not "operation" in message_dict: print("operation not found"); return
         if not "motor" in message_dict["operation"]: print("motor not found"); return

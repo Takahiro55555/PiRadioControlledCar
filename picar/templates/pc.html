@@ -13,6 +13,7 @@
         <div class="card ml-1 mr-1 mb-2" style="width: 100%;">
           <div class="card-body pl-1 pr-1 pt-1 pb-1">
             <small class="card-title">操作</small>
+            <div id="is-enabled" class="card-text">Status: Invalid</div>
             <div id="axis-y" class="card-text">Power: 0%</div>
             <div id="axis-x" class="card-text">Turn: 0%</div>
           </div>
@@ -49,11 +50,13 @@
 
   /* 表示する動画のサイズを自動調整する */
   const videoElement = document.getElementById('remote_video');
-  videoElement.addEventListener('resize', function () {
+  videoElement.addEventListener('resize', resizeVideo, false);
+  window.addEventListener('onload', resizeVideo, false);
+  function resizeVideo() {
     videoElement.style.height = String(document.documentElement.clientHeight * 0.95) + 'px';
     videoElement.style.width = String(document.getElementById('remote_video').style.width) + 'px';
     console.log(document.getElementById('remote_video').style.height);
-  }, false);
+  }
 </script>
 
 <input type="hidden" id="momo-port" value="{{momoPort}}" />
