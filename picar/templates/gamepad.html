@@ -1,0 +1,69 @@
+{% extends "layout.html" %} {% block content %}
+<div class="container padding-1">
+    <div id="monitor" class="row">
+        <div id="indicator" class="col-2 pr-2">
+            <div class="row">
+                <div class="card ml-1 mr-1 mb-2" style="width: 100%;">
+                    <div class="card-body pl-1 pr-1 pt-1 pb-1">
+                        <small class="card-title">通信状況</small>
+                        <div id="wi-fi" class="card-text">Signal Level: 0</div>
+                        <div id="ping" class="card-text">Ping: 0</div>
+                    </div>
+                </div>
+                <div class="card ml-1 mr-1 mb-2" style="width: 100%;">
+                    <div class="card-body pl-1 pr-1 pt-1 pb-1">
+                        <small class="card-title">操作</small>
+                        <div id="is-enabled" class="card-text">Status: Invalid</div>
+                        <div id="axis-y" class="card-text">Power: 0%</div>
+                        <div id="axis-x" class="card-text">Turn: 0%</div>
+                    </div>
+                </div>
+                <div class="card ml-1 mr-1 mb-2" style="width: 100%;">
+                    <div class="card-body pl-1 pr-1 pt-1 pb-1">
+                        <small class="card-title">カメラ</small>
+                        <div class="card-text">
+                            <select id="codec">
+                                <option class="dropdown-item" value="H264">H264</option>
+                                <option class="dropdown-item" value="VP8">VP8</option>
+                                <option class="dropdown-item" value="VP9">VP9</option>
+                                <div>
+                            </select>
+                        </div>
+                        <div class="card-text btn-padding">
+                            <input type="button" class="btn btn-outline-primary btn-block" onclick="connect();"
+                                value="接続" />
+                        </div>
+                        <div class="card-text btn-padding">
+                            <input type="button" class="btn btn-outline-danger btn-block" onclick="disconnect();"
+                                value="切断" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-1">
+            <div class="mr-1"></div>
+        </div>
+        <video id="remote_video" class="col-9 momo-video" autoplay></video>
+    </div id="monitor">
+</div>
+
+<script>
+
+    /* 表示する動画のサイズを自動調整する */
+    const videoElement = document.getElementById('remote_video');
+    videoElement.addEventListener('resize', resizeVideo, false);
+    window.addEventListener('onload', resizeVideo, false);
+    function resizeVideo() {
+        videoElement.style.height = String(document.documentElement.clientHeight * 0.95) + 'px';
+        videoElement.style.width = String(document.getElementById('remote_video').style.width) + 'px';
+        console.log(document.getElementById('remote_video').style.height);
+    }
+</script>
+
+<input type="hidden" id="momo-port" value="{{momoPort}}" />
+<script type="text/javascript" src="{{ static_url('javascript/gamepad.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('javascript/webrtc.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('javascript/monitor.js') }}"></script>
+<link rel="stylesheet" href="{{ static_url('css/pc.css') }}">
+{% end %}

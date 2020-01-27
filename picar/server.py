@@ -101,12 +101,18 @@ class PcPageHundler(tornado.web.RequestHandler):
         print("PcPageHundler")
         self.render('pc.html', title="pc", momoPort=8080)
 
+class GamepadPageHundler(tornado.web.RequestHandler):
+    def get(self):
+        print("GamepadPageHundler")
+        self.render('gamepad.html', title="gamepad", momoPort=8080)
+
 def make_app(debug=False):
     print("Server started")
     return tornado.web.Application([
         (r"/", MainHandler),
         (r"/mobile", MobilePageHundler), # iphoneからジャイロスコープを利用するにはhttpsに対応しないといけないためしばらく放置
         (r"/pc", PcPageHundler),
+        (r"/gamepad", GamepadPageHundler),
         (r"/ws/controller", WebSocketControllerHandler),
         (r"/ws/monitor", WebSocketMonitorHundler),
     ],
